@@ -15,14 +15,5 @@ public struct GithubRepository: Sendable, Identifiable, Hashable {
     public var stars: Int
     public var forks: Int
     
-    public var id: String {
-        path
-    }
-    
-    public var repositoryURL: URL {
-        var comp = URLComponents(string: "https://github.com")!
-        comp.path = path
-        
-        return comp.url!
-    }
+    public var id: String { path }
 }
