@@ -48,9 +48,7 @@ public extension GithubService {
 private extension GithubService {
     
     static func makeTrandingRepositoriesURL(range: GithubTrendingTimeRange) throws -> URL {
-        guard var components = URLComponents(string: "https://github.com") else {
-            throw Error.invalidURL
-        }
+        var components = URLComponents(string: "https://github.com")!
         components.path = "/trending"
         components.queryItems = [
             URLQueryItem(name: "since", value: range.parameter)

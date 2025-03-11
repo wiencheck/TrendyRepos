@@ -2,7 +2,7 @@
 //  GithubTimeRange.swift
 //  SplunkTestGithubService
 //
-//  Created by Adaś on 11/03/2025.
+//  Created by adamwienconek on 11/03/2025.
 //
 
 public enum GithubTrendingTimeRange {
