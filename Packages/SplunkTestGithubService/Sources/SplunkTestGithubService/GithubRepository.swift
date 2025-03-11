@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SplunkTestShared
 
-public struct GithubRepository: Sendable, Identifiable, Hashable {
+public struct GithubRepository: GithubRepositoryProtocol {
     public var name: String
     public var author: String
     public var description: String

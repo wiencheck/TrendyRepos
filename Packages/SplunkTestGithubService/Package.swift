@@ -17,6 +17,7 @@ let package = Package(
             targets: ["SplunkTestGithubService"]),
     ],
     dependencies: [
+        .package(name: "SplunkTestShared", path: "../SplunkTestShared"),
         .package(
             url: "https://github.com/scinfu/SwiftSoup",
             from: "2.8.5"
@@ -28,7 +29,7 @@ let package = Package(
         .target(
             name: "SplunkTestGithubService",
             dependencies: [
-                "SwiftSoup"
+                "SplunkTestShared", "SwiftSoup"
             ],
             resources: [
                 .process("Resources")

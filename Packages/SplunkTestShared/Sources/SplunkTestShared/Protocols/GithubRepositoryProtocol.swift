@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import SplunkTestGithubService
 
-protocol GithubRepositoryProtocol: Identifiable, Hashable, Sendable {
+public protocol GithubRepositoryProtocol: Identifiable, Hashable, Sendable {
     var name: String { get }
     var author: String { get }
     var description: String { get }
@@ -18,7 +17,7 @@ protocol GithubRepositoryProtocol: Identifiable, Hashable, Sendable {
     var repositoryURL: URL { get }
 }
 
-extension GithubRepositoryProtocol {
+public extension GithubRepositoryProtocol {
     var repositoryURL: URL {
         var comp = URLComponents(string: "https://github.com")!
         comp.path = path
@@ -27,8 +26,6 @@ extension GithubRepositoryProtocol {
     }
 }
 
-extension GithubRepositoryProtocol where Self: Identifiable {
+public extension GithubRepositoryProtocol where Self: Identifiable {
     var id: String { path }
 }
-
-extension GithubRepository: GithubRepositoryProtocol {}

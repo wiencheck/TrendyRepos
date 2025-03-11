@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SplunkTestShared
 
 struct GithubRepositoryMock: GithubRepositoryProtocol {
     var name: String

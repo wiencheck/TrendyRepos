@@ -7,6 +7,9 @@
 
 import Observation
 import SplunkTestGithubService
+import SplunkTestShared
+
+extension GithubRepository: GithubRepositoryProtocol {}
 
 @Observable
 final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol {
