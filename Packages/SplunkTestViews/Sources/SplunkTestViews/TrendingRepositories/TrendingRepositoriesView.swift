@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SplunkTestGithubService
+import SplunkTestShared
 
 public struct TrendingRepositoriesView: View {
     
@@ -30,8 +30,29 @@ public struct TrendingRepositoriesView: View {
     }
 }
 
+struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProtocol {
+    var repositories: [any GithubRepositoryProtocol] {
+        [
+            GithubRepositoryMock(
+                name: "Test",
+                author: "adw",
+                description: "Test repository",
+                path: "/Test/adw",
+                stars: 666,
+                forks: 6969
+            )
+        ]
+    }
+    
+    var isLoading: Bool { false }
+    
+    func loadTrendingRepositories() {}
+    
+    
+}
+
 #Preview {
     TrendingRepositoriesView(
-        viewModel: TrendingRepositoriesViewModel.preview
+        viewModel: TrendingRepositoriesViewModel_Preview()
     )
 }

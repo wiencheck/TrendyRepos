@@ -8,8 +8,7 @@
 import Observation
 import SplunkTestGithubService
 import SplunkTestShared
-
-extension GithubRepository: GithubRepositoryProtocol {}
+import SplunkTestViews
 
 @Observable
 final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol {
@@ -35,27 +34,6 @@ final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol
                 print(error)
             }
         }
-    }
-    
-}
-
-extension TrendingRepositoriesViewModel {
-    
-    static var preview: TrendingRepositoriesViewModel {
-        let viewModel = TrendingRepositoriesViewModel()
-        viewModel.repositories = [
-            GithubRepositoryMock(
-                name: "Test",
-                author: "adw",
-                description: "Test repository",
-                path: "/Test/adw",
-                stars: 666,
-                forks: 6969
-            )
-        ]
-        // viewModel.isLoading = true
-        
-        return viewModel
     }
     
 }
