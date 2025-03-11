@@ -9,7 +9,7 @@ public enum GithubTrendingTimeRange {
     
     case today, thisWeek, thisMonth
     
-    var path: String {
+    var parameter: String {
         switch self {
         case .today:
             "daily"
