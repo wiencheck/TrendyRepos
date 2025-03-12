@@ -23,7 +23,7 @@ public struct TrendingRepositoriesView: View {
     public var body: some View {
         List(viewModel.repositories, id: \.id) { repository in
             NavigationLink(value: repository.path) {
-                Text(repository.name)
+                RepositoryCellView(repository: repository)
             }
         }
         .disabled(viewModel.isLoading)

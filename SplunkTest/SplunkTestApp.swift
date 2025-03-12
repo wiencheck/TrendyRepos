@@ -14,12 +14,12 @@ struct SplunkTestApp: App {
             TabView {
                 TrendingRepositoriesTabView()
                     .tabItem {
-                        Label("Trending", systemImage: "")
+                        Label("Trending", systemImage: "chart.line.uptrend.xyaxis")
                     }
                 
                 SettingsTabView()
                     .tabItem {
-                        Label("Settings", systemImage: "")
+                        Label("Settings", systemImage: "gear")
                     }
             }
         }

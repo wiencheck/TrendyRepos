@@ -71,23 +71,33 @@ public struct RepositoryDetailsView: View {
                             
                             Spacer()
                         }
-                        Text(repository.ownerName)
-                            .font(.subheadline)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Owner")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            Text(repository.ownerName)
+                                .font(.headline)
+                        }
+                        .frame(
+                            maxWidth: .infinity,
+                            alignment: .leading
+                        )
                     }
-                } label: {
-                    Label("Author", image: "")
                 }
+                
                 GroupBox {
-                    Text(repository.name)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                } label: {
-                    Label("Name", image: "")
-                }
-                GroupBox {
-                    Text(repository.description)
-                } label: {
-                    Label("Description", image: "")
+                    VStack(alignment: .leading) {
+                        Text("About")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(repository.description)
+                            .font(.headline)
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
                 }
                 
                 LazyVGrid(
@@ -98,17 +108,42 @@ public struct RepositoryDetailsView: View {
                     content: {
                         withAnimation(.easeInOut.delay(2)) {
                             GroupBox {
-                                Text("\(repository.stars)")
-                            } label: {
-                                Label("Stars", image: "")
+                                VStack(alignment: .leading) {
+                                    Text("Stars")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                    
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "star")
+                                        
+                                        Text("\(repository.stars)")
+                                    }
+                                    .font(.subheadline)
+                                }
+                                .frame(
+                                    maxWidth: .infinity,
+                                    alignment: .leading
+                                )
                             }
                             .opacity(opacity[1])
                         }
                         withAnimation(.easeInOut.delay(3)) {
                             GroupBox {
-                                Text("\(repository.forks)")
-                            } label: {
-                                Label("Forks", image: "")
+                                VStack(alignment: .leading) {
+                                    Text("Forks")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "tuningfork")
+                                        
+                                        Text("\(repository.forks)")
+                                    }
+                                    .font(.subheadline)
+                                }
+                                .frame(
+                                    maxWidth: .infinity,
+                                    alignment: .leading
+                                )
                             }
                             .opacity(opacity[2])
                         }
@@ -135,7 +170,7 @@ public struct RepositoryDetailsView: View {
         .refreshable {
             viewModel.loadRepositoryDetails()
         }
-        .navigationTitle("Repo details")
+        .navigationTitle(viewModel.repository?.name ?? "Repository")
         .onAppear {
             viewModel.loadRepositoryDetails()
         }
@@ -164,7 +199,9 @@ private extension RepositoryDetailsView {
 }
 
 #Preview {
-    RepositoryDetailsView(
-        viewModel: RepositoryDetailsViewModel_Preview()
-    )
+    NavigationStack {
+        RepositoryDetailsView(
+            viewModel: RepositoryDetailsViewModel_Preview()
+        )
+    }
 }
