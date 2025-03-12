@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SplunkTestShared
 
-public struct RepositoryOwner: Sendable, Identifiable, Decodable, Hashable {
+public struct RepositoryOwner: RepositoryOwnerProtocol {
     
     public let id: Int
     public let name: String

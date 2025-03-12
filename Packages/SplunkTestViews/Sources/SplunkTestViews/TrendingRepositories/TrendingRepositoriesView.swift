@@ -10,6 +10,9 @@ import SplunkTestShared
 
 public struct TrendingRepositoriesView: View {
     
+    @State
+    private var dateRange: GithubTrendingTimeRange = .today
+    
     let viewModel: any TrendingRepositoriesViewModelProtocol
     public init(
         viewModel: any TrendingRepositoriesViewModelProtocol
@@ -23,6 +26,7 @@ public struct TrendingRepositoriesView: View {
                 Text(repository.name)
             }
         }
+        .disabled(viewModel.isLoading)
         .navigationTitle("Trending")
         .overlay {
             if viewModel.isLoading {
@@ -32,8 +36,24 @@ public struct TrendingRepositoriesView: View {
                     )
             }
         }
-        .onAppear {
-            viewModel.loadTrendingRepositories()
+        .onChange(of: dateRange, initial: true) { oldValue, newValue in
+            if viewModel.repositories.isEmpty || newValue != oldValue {
+                viewModel.loadTrendingRepositories(in: newValue)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Picker(
+                    selection: $dateRange,
+                    label: Text("Sorting options")
+                ) {
+                    ForEach(GithubTrendingTimeRange.allCases) { range in
+                        Text(range.localizedTitle)
+                            .tag(range)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
         }
     }
 }
@@ -43,7 +63,7 @@ struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProto
         [
             GithubRepositoryMock(
                 name: "Test",
-                author: "adw",
+                ownerName: "adw",
                 description: "Test repository",
                 path: "/Test/adw",
                 stars: 666,
@@ -54,13 +74,17 @@ struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProto
     
     var isLoading: Bool { false }
     
-    func loadTrendingRepositories() {}
+    func loadTrendingRepositories(in range: GithubTrendingTimeRange) {
+        
+    }
     
     
 }
 
 #Preview {
-    TrendingRepositoriesView(
-        viewModel: TrendingRepositoriesViewModel_Preview()
-    )
+    NavigationStack {
+        TrendingRepositoriesView(
+            viewModel: TrendingRepositoriesViewModel_Preview()
+        )
+    }
 }

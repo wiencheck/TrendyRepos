@@ -7,21 +7,17 @@
 
 import Observation
 import SplunkTestShared
+import SplunkTestGithubService
 import SplunkTestViews
 
 @Observable
 final class RepositoryDetailsViewModel: RepositoryDetailsViewModelProtocol {
     
-    var repository: (any GithubRepositoryProtocol)? {
-        GithubRepositoryMock(
-            name: "Test",
-            author: "adw",
-            description: "Test repository",
-            path: "/Test/adw",
-            stars: 666,
-            forks: 6969
-        )
-    }
+    private(set) var repository: (any GithubRepositoryProtocol)?
+    
+    private(set) var error: (any Error)?
+    
+    private(set) var isLoading: Bool = false
     
     private let path: String
     init(path: String) {
@@ -29,7 +25,16 @@ final class RepositoryDetailsViewModel: RepositoryDetailsViewModelProtocol {
     }
     
     func loadRepositoryDetails() {
-        
+        isLoading = true
+        Task(priority: .high) {
+            do {
+                self.repository = try await GithubService.fetchRepositoryDetails(at: path)
+            }
+            catch {
+                self.error = error
+            }
+            isLoading = false
+        }
     }
     
 }

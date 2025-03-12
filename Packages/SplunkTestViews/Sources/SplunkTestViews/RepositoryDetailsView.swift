@@ -11,6 +11,8 @@ import SplunkTestShared
 public protocol RepositoryDetailsViewModelProtocol {
     
     var repository: (any GithubRepositoryProtocol)? { get }
+    var isLoading: Bool { get }
+    var error: (any Error)? { get }
     
     func loadRepositoryDetails()
     
@@ -21,13 +23,17 @@ final class RepositoryDetailsViewModel_Preview: RepositoryDetailsViewModelProtoc
     var repository: (any GithubRepositoryProtocol)? {
         GithubRepositoryMock(
             name: "Test",
-            author: "adw",
+            ownerName: "adw",
             description: "Test repository",
             path: "/Test/adw",
             stars: 666,
             forks: 6969
         )
     }
+    
+    var isLoading: Bool { false }
+    
+    var error: (any Error)? { nil }
     
     func loadRepositoryDetails() {}
     
@@ -51,13 +57,38 @@ public struct RepositoryDetailsView: View {
                 Spacer(minLength: 12)
                 
                 GroupBox {
-                    VStack(alignment: .leading) {
-                        Text(repository.name)
+                    HStack {
+                        if let avatarURL = repository.owner?.avatarURL {
+                            AsyncImage(url: avatarURL) { result in
+                                result.image?
+                                    .resizable()
+                                    .scaledToFill()
+                            }
+                            .frame(width: 64, height: 64)
+                            .clipShape(
+                                Circle()
+                            )
+                            
+                            Spacer()
+                        }
+                        Text(repository.ownerName)
+                            .font(.subheadline)
                     }
                 } label: {
-                    Label(repository.author, image: "")
+                    Label("Author", image: "")
                 }
-
+                GroupBox {
+                    Text(repository.name)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } label: {
+                    Label("Name", image: "")
+                }
+                GroupBox {
+                    Text(repository.description)
+                } label: {
+                    Label("Description", image: "")
+                }
                 
                 LazyVGrid(
                     columns: Array(
@@ -65,14 +96,6 @@ public struct RepositoryDetailsView: View {
                         count: 2
                     ),
                     content: {
-                        withAnimation(.easeInOut.delay(1)) {
-                            GroupBox {
-                                Text(repository.description)
-                            } label: {
-                                Label("Description", image: "")
-                            }
-                            .opacity(opacity[0])
-                        }
                         withAnimation(.easeInOut.delay(2)) {
                             GroupBox {
                                 Text("\(repository.stars)")
@@ -104,24 +127,35 @@ public struct RepositoryDetailsView: View {
             }
         }
         .padding(.horizontal)
+        .overlay {
+            if viewModel.isLoading {
+                ProgressView()
+            }
+        }
+        .refreshable {
+            viewModel.loadRepositoryDetails()
+        }
         .navigationTitle("Repo details")
+        .onAppear {
+            viewModel.loadRepositoryDetails()
+        }
     }
     
-//    private var cellDetails: [CellDetails] {
-//        [
-//            // Stars
-//            
-//            // Forks
-//            
-//
-//        ]
-//    }
+    private var groupDetails: [GroupBoxDetails] {
+        [
+            // Stars
+            
+            // Forks
+            
+
+        ]
+    }
     
 }
 
 private extension RepositoryDetailsView {
     
-    struct CellDetails {
+    struct GroupBoxDetails {
         var title: String
         var text: String
         var icon: String

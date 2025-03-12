@@ -9,6 +9,7 @@ import Foundation
 
 public protocol GithubRepositoryProtocol: Identifiable, Hashable, Sendable {
     var name: String { get }
+    var owner: (any RepositoryOwnerProtocol)? { get }
     var ownerName: String { get }
     var description: String { get }
     var path: String { get }

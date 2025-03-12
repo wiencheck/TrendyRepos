@@ -23,12 +23,12 @@ final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol
         }
     }
     
-    func loadTrendingRepositories() {
+    func loadTrendingRepositories(in range: GithubTrendingTimeRange) {
         isLoading = true
         
         _task = .detached(priority: .high) { [weak self] in
             do {
-                self?.repositories = try await GithubService.fetchTrendingRepositories(range: .today)
+                self?.repositories = try await GithubService.fetchTrendingRepositories(range: range)
             }
             catch {
                 print(error)

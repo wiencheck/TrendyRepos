@@ -11,5 +11,5 @@ public protocol TrendingRepositoriesViewModelProtocol {
     var repositories: [any GithubRepositoryProtocol] { get }
     var isLoading: Bool { get }
     
-    func loadTrendingRepositories()
+    func loadTrendingRepositories(in range: GithubTrendingTimeRange)
 }

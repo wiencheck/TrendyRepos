@@ -32,4 +32,6 @@ public struct GithubRepositoryMock: GithubRepositoryProtocol {
         self.forks = forks
     }
     
+    public var owner: (any RepositoryOwnerProtocol)? { nil }
+    
 }

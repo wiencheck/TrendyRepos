@@ -11,13 +11,14 @@ import SplunkTestShared
 public struct GithubRepository: GithubRepositoryProtocol, Decodable {
     
     public var id: Int
-    public var name: String
-    public var owner: RepositoryOwner?
-    public var ownerName: String = "" // This will be assigned manually when parsing from HTML
+    public var name: String// This will be assigned manually when parsing from HTML
     public var description: String
     public var stars: Int
     public var forks: Int
     public var repositoryURL: URL
+    
+    private var _ownerName: String = ""
+    private var _owner: RepositoryOwner?
     
     /// Initializer used when parsing HTML
     init?(
@@ -30,7 +31,7 @@ public struct GithubRepository: GithubRepositoryProtocol, Decodable {
     ) {
         self.id = path.hashValue
         self.name = name
-        self.ownerName = ownerName
+        self._ownerName = ownerName
         self.description = description
         self.stars = stars
         self.forks = forks
@@ -45,8 +46,20 @@ public struct GithubRepository: GithubRepositoryProtocol, Decodable {
         repositoryURL.relativePath
     }
     
+    public var owner: (any RepositoryOwnerProtocol)? {
+        _owner
+    }
+    
+    public var ownerName: String {
+        if !_ownerName.isEmpty {
+            return _ownerName
+        }
+        return owner?.name ?? ""
+    }
+    
     private enum CodingKeys: String, CodingKey {
-        case id, name, description, forks, owner
+        case id, name, description, forks
+        case _owner = "owner"
         case stars = "stargazers_count"
         case repositoryURL = "html_url"
     }

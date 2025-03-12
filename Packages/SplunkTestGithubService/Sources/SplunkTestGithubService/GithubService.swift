@@ -3,6 +3,7 @@
 
 import Foundation
 import SwiftSoup
+import SplunkTestShared
 
 public class GithubService {
     
@@ -92,7 +93,7 @@ private extension GithubService {
         var components = URLComponents(string: "https://github.com")!
         components.path = "/trending"
         components.queryItems = [
-            URLQueryItem(name: "since", value: range.parameter)
+            URLQueryItem(name: "since", value: range.queryParameter)
         ]
         
         guard let url = components.url else {
