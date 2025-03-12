@@ -10,7 +10,7 @@ import SplunkTestShared
 
 public struct GithubRepositoryMock: GithubRepositoryProtocol {
     public var name: String
-    public var author: String
+    public var ownerName: String
     public var description: String
     public var path: String
     public var stars: Int
@@ -18,14 +18,14 @@ public struct GithubRepositoryMock: GithubRepositoryProtocol {
     
     public init(
         name: String,
-        author: String,
+        ownerName: String,
         description: String,
         path: String,
         stars: Int,
         forks: Int
     ) {
         self.name = name
-        self.author = author
+        self.ownerName = ownerName
         self.description = description
         self.path = path
         self.stars = stars

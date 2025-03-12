@@ -9,7 +9,7 @@ import Foundation
 
 public protocol GithubRepositoryProtocol: Identifiable, Hashable, Sendable {
     var name: String { get }
-    var author: String { get }
+    var ownerName: String { get }
     var description: String { get }
     var path: String { get }
     var stars: Int { get }

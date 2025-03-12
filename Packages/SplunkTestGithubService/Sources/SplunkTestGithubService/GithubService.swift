@@ -6,11 +6,24 @@ import SwiftSoup
 
 public class GithubService {
     
+    public static func fetchRepositoryDetails(at path: String) async throws -> GithubRepository {
+        let request = try makeRepositoryRequest(path: path)
+        let data = try await fetchData(for: request)
+//        let url = Bundle.module.url(forResource: "example", withExtension: "json")!
+//        let data = try Data(contentsOf: url)
+        
+        return try JSONDecoder().decode(GithubRepository.self, from: data)
+    }
+    
     public static func fetchTrendingRepositories(
         range: GithubTrendingTimeRange
     ) async throws -> [GithubRepository] {
-        let trendingPageURL = try makeTrandingRepositoriesURL(range: range)
-        let html = try await fetchHTML(forURL: trendingPageURL)
+        let request = try makeTrandingRepositoriesRequest(range: range)
+        let data = try await fetchData(for: request)
+        
+        guard let html = String(data: data, encoding: .utf8) else {
+            throw Error.parsingFailed(context: "data-encoding")
+        }
         
         let doc: Document = try SwiftSoup.parse(html)
         guard let hpc = try doc.select("div[data-hpc]").first() else {
@@ -41,13 +54,41 @@ public extension GithubService {
         case elementNotFound(context: String)
         case parsingFailed(context: String)
         case invalidResponse(code: Int)
+        
+        public var errorDescription: String? {
+            switch self {
+            case .invalidURL:
+                "Invalid URL"
+            case .elementNotFound(let context):
+                "Element not found (\(context)"
+            case .parsingFailed(let context):
+                "Parsing failed (\(context)"
+            case .invalidResponse(let code):
+                "Invalid response (\(code))"
+            }
+        }
     }
     
 }
 
 private extension GithubService {
     
-    static func makeTrandingRepositoriesURL(range: GithubTrendingTimeRange) throws -> URL {
+    static func makeRepositoryRequest(path: String) throws -> URLRequest {
+        var components = URLComponents(string: "https://api.github.com")!
+        components.path = "/repos\(path)"
+        guard let url = components.url else {
+            throw Error.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.addValue(
+            "application/vnd.github+json",
+            forHTTPHeaderField: "accept"
+        )
+        
+        return request
+    }
+    
+    static func makeTrandingRepositoriesRequest(range: GithubTrendingTimeRange) throws -> URLRequest {
         var components = URLComponents(string: "https://github.com")!
         components.path = "/trending"
         components.queryItems = [
@@ -57,11 +98,11 @@ private extension GithubService {
         guard let url = components.url else {
             throw Error.invalidURL
         }
-        return url
+        return URLRequest(url: url)
     }
     
-    static func fetchHTML(forURL url: URL) async throws -> String {
-        let result = try await URLSession.shared.data(from: url)
+    static func fetchData(for request: URLRequest) async throws -> Data {
+        let result = try await URLSession.shared.data(for: request)
         guard let response = result.1 as? HTTPURLResponse else {
             throw Error.invalidResponse(code: -1)
         }
@@ -69,7 +110,7 @@ private extension GithubService {
             throw Error.invalidResponse(code: response.statusCode)
         }
         
-        return String(data: result.0, encoding: .utf8) ?? ""
+        return result.0
     }
     
     static func parseArticleElement(_ article: Element) throws -> GithubRepository {
@@ -128,14 +169,18 @@ private extension GithubService {
                 }
             }
         }
-        return GithubRepository(
+        guard let repository = GithubRepository(
             name: titleComponents[1],
-            author: titleComponents[0],
+            ownerName: titleComponents[0],
             description: description,
             path: path,
             stars: stars,
             forks: forks
         )
+        else {
+            throw Error.parsingFailed(context: "repository nil")
+        }
+        return repository
     }
     
 }
