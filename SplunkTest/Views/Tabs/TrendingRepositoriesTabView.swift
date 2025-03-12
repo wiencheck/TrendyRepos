@@ -14,10 +14,27 @@ struct TrendingRepositoriesTabView: View {
     @State
     private var path: [String] = []
     
+    @State
+    var p: String?
+    
     var body: some View {
+//        NavigationSplitView {
+//            TrendingRepositoriesView(
+//                viewModel: TrendingRepositoriesViewModel(),
+//                path: $p
+//            )
+//        } detail: {
+//            if let p {
+//                RepositoryDetailsView(
+//                    viewModel: RepositoryDetailsViewModel(path: path)
+//                )
+//            }
+//        }
+
         NavigationStack(path: $path) {
             TrendingRepositoriesView(
-                viewModel: TrendingRepositoriesViewModel()
+                viewModel: TrendingRepositoriesViewModel(),
+                path: $p
             )
             .navigationDestination(
                 for: String.self,

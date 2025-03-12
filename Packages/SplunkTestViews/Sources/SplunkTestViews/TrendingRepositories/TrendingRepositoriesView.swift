@@ -13,11 +13,16 @@ public struct TrendingRepositoriesView: View {
     @State
     private var dateRange: GithubTrendingTimeRange = .today
     
+    @Binding
+    private var selectedPath: String?
+    
     let viewModel: any TrendingRepositoriesViewModelProtocol
     public init(
-        viewModel: any TrendingRepositoriesViewModelProtocol
+        viewModel: any TrendingRepositoriesViewModelProtocol,
+        path: Binding<String?>
     ) {
         self.viewModel = viewModel
+        self._selectedPath = path
     }
     
     public var body: some View {
@@ -81,10 +86,10 @@ struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProto
     
 }
 
-#Preview {
-    NavigationStack {
-        TrendingRepositoriesView(
-            viewModel: TrendingRepositoriesViewModel_Preview()
-        )
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        TrendingRepositoriesView(
+//            viewModel: TrendingRepositoriesViewModel_Preview()
+//        )
+//    }
+//}
