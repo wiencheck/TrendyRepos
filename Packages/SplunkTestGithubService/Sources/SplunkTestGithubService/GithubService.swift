@@ -69,7 +69,7 @@ private extension GithubService {
             throw Error.invalidResponse(code: response.statusCode)
         }
         
-        return String(data: result.0, encoding: .ascii) ?? ""
+        return String(data: result.0, encoding: .utf8) ?? ""
     }
     
     static func parseArticleElement(_ article: Element) throws -> GithubRepository {

@@ -33,6 +33,7 @@ final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol
             catch {
                 print(error)
             }
+            self?.isLoading = false
         }
     }
     

@@ -11,7 +11,17 @@ import SwiftUI
 struct SplunkTestApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                TrendingRepositoriesTabView()
+                    .tabItem {
+                        Label("Trending", systemImage: "")
+                    }
+                
+                SettingsTabView()
+                    .tabItem {
+                        Label("Settings", systemImage: "")
+                    }
+            }
         }
     }
 }

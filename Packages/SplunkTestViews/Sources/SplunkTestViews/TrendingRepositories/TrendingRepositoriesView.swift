@@ -18,14 +18,22 @@ public struct TrendingRepositoriesView: View {
     }
     
     public var body: some View {
-        if viewModel.isLoading {
-            ProgressView()
-                .progressViewStyle(
-                    CircularProgressViewStyle()
-                )
+        List(viewModel.repositories, id: \.id) { repository in
+            NavigationLink(value: repository.path) {
+                Text(repository.name)
+            }
         }
-        else {
-            Text(viewModel.repositories[0].name)
+        .navigationTitle("Trending")
+        .overlay {
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(
+                        CircularProgressViewStyle()
+                    )
+            }
+        }
+        .onAppear {
+            viewModel.loadTrendingRepositories()
         }
     }
 }
