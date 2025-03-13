@@ -85,6 +85,11 @@ public struct RepositoryDetailsView: View {
                         )
                     }
                 }
+                .opacity(animationAmount)
+                .animation(
+                    .linear(duration: Constants.opacityAnimationDuration),
+                    value: animationAmount
+                )
                 
                 GroupBox {
                     VStack(alignment: .leading) {
@@ -98,6 +103,12 @@ public struct RepositoryDetailsView: View {
                         maxWidth: .infinity,
                         alignment: .leading
                     )
+                    .opacity(animationAmount)
+                    .animation(
+                        .linear(duration: Constants.opacityAnimationDuration)
+                            .delay(Constants.opacityAnimationDelay * 1),
+                        value: animationAmount
+                    )
                 }
                 
                 LazyVGrid(
@@ -106,47 +117,53 @@ public struct RepositoryDetailsView: View {
                         count: 2
                     ),
                     content: {
-                        withAnimation(.easeInOut.delay(2)) {
-                            GroupBox {
-                                VStack(alignment: .leading) {
-                                    Text("Stars")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
+                        GroupBox {
+                            VStack(alignment: .leading) {
+                                Text("Stars")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                
+                                HStack(spacing: 4) {
+                                    Image(systemName: "star")
                                     
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "star")
-                                        
-                                        Text("\(repository.stars)")
-                                    }
-                                    .font(.subheadline)
+                                    Text("\(repository.stars)")
                                 }
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading
-                                )
+                                .font(.subheadline)
                             }
-                            .opacity(opacity[1])
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading
+                            )
                         }
-                        withAnimation(.easeInOut.delay(3)) {
-                            GroupBox {
-                                VStack(alignment: .leading) {
-                                    Text("Forks")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "tuningfork")
-                                        
-                                        Text("\(repository.forks)")
-                                    }
-                                    .font(.subheadline)
+                        .opacity(animationAmount)
+                        .animation(
+                            .linear(duration: Constants.opacityAnimationDuration)
+                                .delay(Constants.opacityAnimationDelay * 2),
+                            value: animationAmount
+                        )
+                        GroupBox {
+                            VStack(alignment: .leading) {
+                                Text("Forks")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                HStack(spacing: 4) {
+                                    Image(systemName: "tuningfork")
+                                    
+                                    Text("\(repository.forks)")
                                 }
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading
-                                )
+                                .font(.subheadline)
                             }
-                            .opacity(opacity[2])
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading
+                            )
                         }
+                        .opacity(animationAmount)
+                        .animation(
+                            .linear(duration: Constants.opacityAnimationDuration)
+                                .delay(Constants.opacityAnimationDelay * 3),
+                            value: animationAmount
+                        )
                     }
                 )
                 
@@ -155,6 +172,12 @@ public struct RepositoryDetailsView: View {
                 Link(
                     "Open in Safari",
                     destination: repository.repositoryURL
+                )
+                .opacity(animationAmount)
+                .animation(
+                    .linear(duration: Constants.opacityAnimationDuration)
+                        .delay(Constants.opacityAnimationDelay * 4),
+                    value: animationAmount
                 )
             }
             else {
@@ -174,26 +197,22 @@ public struct RepositoryDetailsView: View {
         .onAppear {
             viewModel.loadRepositoryDetails()
         }
+        .onChange(of: viewModel.isLoading) { _, newValue in
+            if newValue { return }
+            animationAmount = 1
+        }
     }
     
-    private var groupDetails: [GroupBoxDetails] {
-        [
-            // Stars
-            
-            // Forks
-            
-
-        ]
-    }
+    @State
+    private var animationAmount: Double = 0
     
 }
 
 private extension RepositoryDetailsView {
     
-    struct GroupBoxDetails {
-        var title: String
-        var text: String
-        var icon: String
+    enum Constants {
+        static var opacityAnimationDuration: Double { 0.25 }
+        static var opacityAnimationDelay: Double { 0.25 }
     }
     
 }

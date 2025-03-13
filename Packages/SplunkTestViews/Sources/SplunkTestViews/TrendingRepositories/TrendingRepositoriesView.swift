@@ -42,9 +42,6 @@ public struct TrendingRepositoriesView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
-                Text("Setting")
-            }
             ToolbarItem(placement: .primaryAction) {
                 Picker(
                     selection: $dateRange,
