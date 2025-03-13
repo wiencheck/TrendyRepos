@@ -16,7 +16,6 @@
 		2B4264CC2D8301F800D645F6 /* RepositoryDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264B62D8301F800D645F6 /* RepositoryDetailsViewModel.swift */; };
 		2B4264CD2D8301F800D645F6 /* TrendingRepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264B72D8301F800D645F6 /* TrendingRepositoriesViewModel.swift */; };
 		2B4264CF2D8301F800D645F6 /* TrendyReposApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264BF2D8301F800D645F6 /* TrendyReposApp.swift */; };
-		2B4264D22D8302B100D645F6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B4264D02D8302B100D645F6 /* Preview Assets.xcassets */; };
 		2B4264D32D8302D100D645F6 /* TrendyReposTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264C12D8301F800D645F6 /* TrendyReposTests.swift */; };
 		2B4264D42D8302D900D645F6 /* TrendyReposUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264C42D8301F800D645F6 /* TrendyReposUITestsLaunchTests.swift */; };
 		2B4264D52D8302D900D645F6 /* TrendyReposUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4264C32D8301F800D645F6 /* TrendyReposUITests.swift */; };
@@ -49,7 +48,6 @@
 		2B4264C32D8301F800D645F6 /* TrendyReposUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendyReposUITests.swift; sourceTree = "<group>"; };
 		2B4264C42D8301F800D645F6 /* TrendyReposUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendyReposUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2B4264C62D8301F800D645F6 /* TrendyReposTestViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrendyReposTestViews.h; sourceTree = "<group>"; };
-		2B4264D02D8302B100D645F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		697C7CB82D8090F2000A04E1 /* TrendyRepos_Views.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TrendyRepos_Views.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69BD6EBA2D8085DA002BDBF0 /* TrendyRepos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrendyRepos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69BD6ECB2D8085DB002BDBF0 /* TrendyRepos Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TrendyRepos Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,8 +111,6 @@
 		2B4264C02D8301F800D645F6 /* TrendyRepos */ = {
 			isa = PBXGroup;
 			children = (
-				2B4264D02D8302B100D645F6 /* Preview Assets.xcassets */,
-				2B4264D12D8302B100D645F6 /* Preview Content */,
 				2B4264B92D8301F800D645F6 /* Entities */,
 				2B4264BD2D8301F800D645F6 /* Assets.xcassets */,
 				2B4264BE2D8301F800D645F6 /* TrendyRepos.entitlements */,
@@ -146,13 +142,6 @@
 				2B4264C62D8301F800D645F6 /* TrendyReposTestViews.h */,
 			);
 			path = TrendyReposViews;
-			sourceTree = "<group>";
-		};
-		2B4264D12D8302B100D645F6 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		697C7CC02D8090F8000A04E1 /* Frameworks */ = {
@@ -347,7 +336,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B4264D22D8302B100D645F6 /* Preview Assets.xcassets in Resources */,
 				2B4264C92D8301F800D645F6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -629,7 +617,7 @@
 				CODE_SIGN_ENTITLEMENTS = TrendyRepos/TrendyRepos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TrendyRepos/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -670,7 +658,7 @@
 				CODE_SIGN_ENTITLEMENTS = TrendyRepos/TrendyRepos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TrendyRepos/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
