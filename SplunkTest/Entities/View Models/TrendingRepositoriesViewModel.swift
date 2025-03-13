@@ -23,6 +23,10 @@ final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol
         }
     }
     
+    deinit {
+        print("Trending vm deinit")
+    }
+    
     func loadTrendingRepositories(in range: GithubTrendingTimeRange) {
         isLoading = true
         

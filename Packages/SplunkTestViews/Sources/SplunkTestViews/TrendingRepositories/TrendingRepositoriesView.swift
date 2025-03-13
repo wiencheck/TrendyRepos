@@ -13,16 +13,11 @@ public struct TrendingRepositoriesView: View {
     @State
     private var dateRange: GithubTrendingTimeRange = .today
     
-    @Binding
-    private var selectedPath: String?
-    
     let viewModel: any TrendingRepositoriesViewModelProtocol
     public init(
-        viewModel: any TrendingRepositoriesViewModelProtocol,
-        path: Binding<String?>
+        viewModel: any TrendingRepositoriesViewModelProtocol
     ) {
         self.viewModel = viewModel
-        self._selectedPath = path
     }
     
     public var body: some View {
@@ -47,6 +42,9 @@ public struct TrendingRepositoriesView: View {
             }
         }
         .toolbar {
+            ToolbarItem(placement: .secondaryAction) {
+                Text("Setting")
+            }
             ToolbarItem(placement: .primaryAction) {
                 Picker(
                     selection: $dateRange,

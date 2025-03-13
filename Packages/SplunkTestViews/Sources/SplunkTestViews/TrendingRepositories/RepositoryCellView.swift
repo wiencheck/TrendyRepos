@@ -20,13 +20,16 @@ public struct RepositoryCellView: View {
             HStack(spacing: 2) {
                 Text(repository.ownerName)
                 Text("/")
-                Text(repository.ownerName)
+                Text(repository.name)
                     .fontWeight(.semibold)
             }
+            .lineLimit(1)
+            
             Text(repository.description)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
+            
             HStack {
                 HStack(spacing: 2) {
                     Image(systemName: "star")
