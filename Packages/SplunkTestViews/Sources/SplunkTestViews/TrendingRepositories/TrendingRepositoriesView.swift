@@ -8,26 +8,31 @@
 import SwiftUI
 import SplunkTestShared
 
-public struct TrendingRepositoriesView: View {
+public struct TrendingRepositoriesView<ViewModel>: View where ViewModel: TrendingRepositoriesViewModelProtocol & ObservableObject {
     
-    @State
+    @AppStorage("daterange")
     private var dateRange: GithubTrendingTimeRange = .today
     
-    let viewModel: any TrendingRepositoriesViewModelProtocol
+    @StateObject
+    private var viewModel: ViewModel
     public init(
-        viewModel: any TrendingRepositoriesViewModelProtocol
+        viewModel: ViewModel
     ) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(
+            wrappedValue: viewModel
+        )
     }
     
     public var body: some View {
-        List(viewModel.repositories, id: \.id) { repository in
+        List(viewModel.repositories, id: \.path) { repository in
             NavigationLink(value: repository.path) {
                 RepositoryCellView(repository: repository)
             }
         }
         .disabled(viewModel.isLoading)
-        .navigationTitle("Trending")
+        .navigationTitle(
+            "Trending \(dateRange.localizedTitle)".capitalized
+        )
         .overlay {
             if viewModel.isLoading {
                 ProgressView()
@@ -43,22 +48,40 @@ public struct TrendingRepositoriesView: View {
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Picker(
-                    selection: $dateRange,
-                    label: Text("Sorting options")
-                ) {
-                    ForEach(GithubTrendingTimeRange.allCases) { range in
-                        Text(range.localizedTitle)
-                            .tag(range)
+                Menu {
+                    Section("Date range:") {
+                        Picker(
+                            selection: $dateRange,
+                            label: Text("Date range:")
+                        ) {
+                            ForEach(GithubTrendingTimeRange.allCases) { range in
+                                Text(range.localizedTitle)
+                                    .tag(range)
+                            }
+                        }
+                        .pickerStyle(.inline)
                     }
+                    
+                    Section {
+                        Button {
+                            NotificationCenter.default.post(
+                                name: .presentSettings,
+                                object: nil
+                            )
+                        } label: {
+                            Label("Open Settings", systemImage: "gear")
+                        }
+
+                    }
+                } label: {
+                    Label("", systemImage: "ellipsis.circle")
                 }
-                .pickerStyle(.menu)
             }
         }
     }
 }
 
-struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProtocol {
+final class TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProtocol, ObservableObject {
     var repositories: [any GithubRepositoryProtocol] {
         [
             GithubRepositoryMock(
@@ -81,10 +104,10 @@ struct TrendingRepositoriesViewModel_Preview: TrendingRepositoriesViewModelProto
     
 }
 
-//#Preview {
-//    NavigationStack {
-//        TrendingRepositoriesView(
-//            viewModel: TrendingRepositoriesViewModel_Preview()
-//        )
-//    }
-//}
+#Preview {
+    NavigationStack {
+        TrendingRepositoriesView(
+            viewModel: TrendingRepositoriesViewModel_Preview()
+        )
+    }
+}

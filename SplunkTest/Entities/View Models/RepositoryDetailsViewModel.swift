@@ -5,13 +5,13 @@
 //  Created by Adaś on 12/03/2025.
 //
 
-import Observation
+import Foundation
 import SplunkTestShared
 import SplunkTestGithubService
 import SplunkTestViews
 
 @Observable
-final class RepositoryDetailsViewModel: RepositoryDetailsViewModelProtocol {
+final class RepositoryDetailsViewModel: RepositoryDetailsViewModelProtocol, ObservableObject {
     
     private(set) var repository: (any GithubRepositoryProtocol)?
     

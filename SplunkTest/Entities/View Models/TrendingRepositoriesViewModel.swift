@@ -5,13 +5,13 @@
 //  Created by Adaś on 11/03/2025.
 //
 
-import Observation
 import SplunkTestGithubService
 import SplunkTestShared
 import SplunkTestViews
+import Foundation
 
 @Observable
-final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol {
+final class TrendingRepositoriesViewModel: TrendingRepositoriesViewModelProtocol, ObservableObject {
     
     fileprivate(set) var repositories: [any GithubRepositoryProtocol] = []
     

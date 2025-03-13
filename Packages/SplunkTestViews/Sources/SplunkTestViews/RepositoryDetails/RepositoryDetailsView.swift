@@ -8,47 +8,19 @@
 import SwiftUI
 import SplunkTestShared
 
-public protocol RepositoryDetailsViewModelProtocol {
-    
-    var repository: (any GithubRepositoryProtocol)? { get }
-    var isLoading: Bool { get }
-    var error: (any Error)? { get }
-    
-    func loadRepositoryDetails()
-    
-}
-
-final class RepositoryDetailsViewModel_Preview: RepositoryDetailsViewModelProtocol {
-    
-    var repository: (any GithubRepositoryProtocol)? {
-        GithubRepositoryMock(
-            name: "Test",
-            ownerName: "adw",
-            description: "Test repository",
-            path: "/Test/adw",
-            stars: 666,
-            forks: 6969
-        )
-    }
-    
-    var isLoading: Bool { false }
-    
-    var error: (any Error)? { nil }
-    
-    func loadRepositoryDetails() {}
-    
-}
-
-public struct RepositoryDetailsView: View {
+public struct RepositoryDetailsView<ViewModel>: View where ViewModel: RepositoryDetailsViewModelProtocol & ObservableObject {
     
     @State
     private var opacity: [Double] = [1,1,1]
     
-    private let viewModel: any RepositoryDetailsViewModelProtocol
+    @StateObject
+    private var viewModel: ViewModel
     public init(
-        viewModel: any RepositoryDetailsViewModelProtocol
+        viewModel: ViewModel
     ) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(
+            wrappedValue: viewModel
+        )
     }
     
     public var body: some View {
@@ -87,7 +59,7 @@ public struct RepositoryDetailsView: View {
                 }
                 .opacity(animationAmount)
                 .animation(
-                    .linear(duration: Constants.opacityAnimationDuration),
+                    .easeInOut(duration: Constants.opacityAnimationDuration),
                     value: animationAmount
                 )
                 
@@ -105,7 +77,7 @@ public struct RepositoryDetailsView: View {
                     )
                     .opacity(animationAmount)
                     .animation(
-                        .linear(duration: Constants.opacityAnimationDuration)
+                        .easeInOut(duration: Constants.opacityAnimationDuration)
                             .delay(Constants.opacityAnimationDelay * 1),
                         value: animationAmount
                     )
@@ -137,7 +109,7 @@ public struct RepositoryDetailsView: View {
                         }
                         .opacity(animationAmount)
                         .animation(
-                            .linear(duration: Constants.opacityAnimationDuration)
+                            .easeInOut(duration: Constants.opacityAnimationDuration)
                                 .delay(Constants.opacityAnimationDelay * 2),
                             value: animationAmount
                         )
@@ -160,7 +132,7 @@ public struct RepositoryDetailsView: View {
                         }
                         .opacity(animationAmount)
                         .animation(
-                            .linear(duration: Constants.opacityAnimationDuration)
+                            .easeInOut(duration: Constants.opacityAnimationDuration)
                                 .delay(Constants.opacityAnimationDelay * 3),
                             value: animationAmount
                         )
@@ -175,7 +147,7 @@ public struct RepositoryDetailsView: View {
                 )
                 .opacity(animationAmount)
                 .animation(
-                    .linear(duration: Constants.opacityAnimationDuration)
+                    .easeInOut(duration: Constants.opacityAnimationDuration)
                         .delay(Constants.opacityAnimationDelay * 4),
                     value: animationAmount
                 )
@@ -214,6 +186,27 @@ private extension RepositoryDetailsView {
         static var opacityAnimationDuration: Double { 0.25 }
         static var opacityAnimationDelay: Double { 0.25 }
     }
+    
+}
+
+final class RepositoryDetailsViewModel_Preview: RepositoryDetailsViewModelProtocol, ObservableObject {
+    
+    var repository: (any GithubRepositoryProtocol)? {
+        GithubRepositoryMock(
+            name: "Test",
+            ownerName: "adw",
+            description: "Test repository",
+            path: "/Test/adw",
+            stars: 666,
+            forks: 6969
+        )
+    }
+    
+    var isLoading: Bool { false }
+    
+    var error: (any Error)? { nil }
+    
+    func loadRepositoryDetails() {}
     
 }
 

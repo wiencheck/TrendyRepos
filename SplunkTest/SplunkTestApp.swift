@@ -17,6 +17,12 @@ struct SplunkTestApp: App {
     @State
     private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
     
+    @AppStorage("forcedarkmode")
+    private var forceDarkMode: Bool = false
+    
+    @State
+    private var presentSettings: Bool = false
+    
     var body: some Scene {
         WindowGroup {
             NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -37,6 +43,20 @@ struct SplunkTestApp: App {
                 )
             }
             .navigationSplitViewStyle(.balanced)
+            .preferredColorScheme(
+                forceDarkMode ? .dark : nil
+            )
+            .sheet(isPresented: $presentSettings) {
+                presentSettings = false
+            } content: {
+                NavigationStack {
+                    SettingsView()
+                }
+            }
+            .onReceive(
+                NotificationCenter.default.publisher(for: .presentSettings)) { _ in
+                    presentSettings = true
+                }
         }
     }
 }
